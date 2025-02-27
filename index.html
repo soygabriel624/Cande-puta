@@ -3,56 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invitación de Cumpleaños</title>
+    <title>M prdOnas¿</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
             text-align: center;
-            background-color: #fff;
+            font-family: Arial, sans-serif;
+            background-color: #fbe3e8;
+            padding: 50px;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 50px;
+            color: #d10000;
+        }
+        .botones {
+            margin-top: 30px;
+        }
+        #perdonar {
+            font-size: 20px;
+            padding: 15px 30px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 500px;
-            width: 100%;
         }
-        .header {
-            font-size: 2em;
-            color: #ff69b4;
-            margin-bottom: 20px;
+        #no {
+            font-size: 20px;
+            padding: 15px 30px;
+            background-color: #d10000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-left: 10px;
         }
-        .details {
-            font-size: 1.2em;
-            color: #333;
-            margin-bottom: 20px;
+        #mensaje {
+            font-size: 30px;
+            margin-top: 20px;
+            display: none;
+            color: #28a745;
         }
-        .footer {
-            font-size: 1em;
-            color: #666;
+        #imagen {
+            display: none;
+            margin-top: 20px;
+            width: 300px;
+            inset: 0;
+            margin: auto;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">¡Estás Invitado a una Fiesta de Cumpleaños!</div>
-        <div class="details">
-            <p><strong>Nombre del Cumpleañero:</strong> Candela</p>
-            <p><strong>Fecha:</strong> 25/08/2024</p>
-            <p><strong>Hora:</strong> 17:00hs</p>
-            <p><strong>Lugar:</strong> Pasco 2733 </p>
-        </div>
-        <div class="footer">
-            <p>¡Esperamos verte allí!</p>
-            <p>Por favor confirma tu asistencia hacé</p> <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZGSGeC2d4X8iOhx3-_KRHJ-0rMlne1fQr9mYlVeauF3FgKA/viewform?usp=sf_link">Click acá</a>
-        </div>
+
+    <h1 id="titulo">M prdOnas¿</h1>
+
+    <div class="botones">
+        <button id="perdonar" onclick="perdonar()">tE perd0nO¡¡¡</button>
+        <button id="no" onclick="noPerdonar()">No</button>
     </div>
+
+    <p id="mensaje"></p>
+    <img id="imagen" src="" alt="Imagen personalizada">
+
+    <canvas id="confetti"></canvas>
+
+    <script>
+        let noTextos = ["No", "¿Segura?", "Piensa bien", "Última oportunidad", "¿De verdad?", "No seas así...", "No me hagas llorar", "Andele :(", "Ni un poquito?", "Voy a llorar",];
+        let index = 0;
+        let tamañoNo = 20;
+        let tamañoSi = 20;
+
+        function noPerdonar() {
+            if (index < noTextos.length - 1) {
+                index++;
+                document.getElementById("no").innerText = noTextos[index];
+                tamañoNo -= 1;
+                tamañoSi += 19;
+                document.getElementById("no").style.fontSize = tamañoNo + "px";
+                document.getElementById("no").style.padding = (tamañoNo / 2) + "px " + tamañoNo + "px";
+                document.getElementById("perdonar").style.fontSize = tamañoSi + "px";
+                document.getElementById("perdonar").style.padding = (tamañoSi / 2) + "px " + tamañoSi + "px";
+            } else {
+                document.getElementById("no").innerText = "Ya no puedes decir No";
+                document.getElementById("no").disabled = true;
+            }
+        }
+
+        function perdonar() {
+            document.getElementById("titulo").innerText = "Yeyy!!! te quiero mucho, gracias por ser mí amiga!";
+            document.getElementById("mensaje").style.display = "block";
+            document.getElementById("imagen").style.display = "block";
+            document.getElementById("imagen").src = "https://www.thienphuoc.com/upload/thienphuoc/stsg_gallery_large_600fs9ao7w849ue.jpg"; // Cambia esto con tu imagen
+            document.querySelector(".botones").style.display = "none";
+            lanzarConfeti();
+            
+        }
+        function lanzarConfeti() {
+            let canvas = document.getElementById("confetti");
+            let ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            let confetti = [];
+            let colores = ["#ff0", "#f00", "#0f0", "#00f", "#f0f", "#0ff"];
+
+            function crearConfeti() {
+                for (let i = 0; i < 150; i++) {
+                    confetti.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height - canvas.height,
+                        color: colores[Math.floor(Math.random() * colores.length)],
+                        tamaño: Math.random() * 8 + 4,
+                        velocidad: Math.random() * 3 + 2,
+                        angulo: Math.random() * 360
+                    });
+                }
+            }
+
+            function animarConfeti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confetti.forEach((c, i) => {
+                    ctx.fillStyle = c.color;
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.tamaño, 0, Math.PI * 2);
+                    ctx.fill();
+                    c.y += c.velocidad;
+                    if (c.y > canvas.height) confetti[i].y = -10;
+                });
+                requestAnimationFrame(animarConfeti);
+            }
+
+            crearConfeti();
+            animarConfeti();
+        }
+    </script>
+
+
 </body>
 </html>
